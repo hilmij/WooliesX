@@ -1,5 +1,6 @@
 namespace WooliesXFunctionApp
 {
+    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
@@ -29,28 +30,14 @@ namespace WooliesXFunctionApp
         public static HttpResponseMessage GetProducts([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = RouteProducts)]HttpRequestMessage req, TraceWriter log)
         {
             log.Verbose($"HTTP trigger {RouteProducts} function processed a request.");
-            try
-            {
-                return HttpResponseBuilder<List<Product>>.Build(new ProductService(new ResourceService()).GetProducts(RequestUtil.GetSortOption(req)));
-            }
-            catch (CannotGetResourceException e)
-            {
-                return HttpResponseBuilder<string>.Build(HttpStatusCode.ServiceUnavailable, e.Message);
-            }
+            return ExecProductServiceFunc(service => HttpResponseBuilder<List<Product>>.Build(service.GetProducts(RequestUtil.GetSortOption(req))), log);
         }
 
         [FunctionName("TrolleyCalculator")]
         public static HttpResponseMessage TrolleyCalculator([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = RouteTrolleyCalculator)]HttpRequestMessage req, TraceWriter log)
         {
             log.Verbose($"HTTP trigger {RouteTrolleyCalculator} function processed a request.");
-            try
-            {
-                return HttpResponseBuilder<TrolleyCalculatorOutput>.Build(new ProductService(new ResourceService()).GetMinPrice(RequestUtil.GetEntity<TrolleyCalculatorInput>(req)));
-            }
-            catch (CannotGetResourceException e)
-            {
-                return HttpResponseBuilder<string>.Build(HttpStatusCode.ServiceUnavailable, e.Message);
-            }
+            return ExecProductServiceFunc(service => HttpResponseBuilder<TrolleyCalculatorOutput>.Build(service.GetMinPrice(RequestUtil.GetEntity<TrolleyCalculatorInput>(req))), log);
         }
 
         /// <summary>
@@ -63,13 +50,24 @@ namespace WooliesXFunctionApp
         public static HttpResponseMessage TrolleyCalculator2([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = RouteTrolleyCalculator2)]HttpRequestMessage req, TraceWriter log)
         {
             log.Verbose($"HTTP trigger {RouteTrolleyCalculator} function processed a request.");
+            return ExecProductServiceFunc(service => HttpResponseBuilder<decimal>.Build(service.GetMinPriceAsDecimal(RequestUtil.GetEntity<TrolleyCalculatorInput>(req))), log);
+        }
+
+        private static HttpResponseMessage ExecProductServiceFunc(Func<ProductService, HttpResponseMessage> func, TraceWriter log)
+        {
             try
             {
-                return HttpResponseBuilder<decimal>.Build(new ProductService(new ResourceService()).GetMinPriceAsDecimal(RequestUtil.GetEntity<TrolleyCalculatorInput>(req)));
+                return func.Invoke(new ProductService(new ResourceService()));
             }
             catch (CannotGetResourceException e)
             {
+                log.Error(e.Message, e);
                 return HttpResponseBuilder<string>.Build(HttpStatusCode.ServiceUnavailable, e.Message);
+            }
+            catch (System.Exception e)
+            {
+                log.Error(e.Message, e);
+                return HttpResponseBuilder<string>.Build(HttpStatusCode.InternalServerError, e.Message);
             }
         }
     }
