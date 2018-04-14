@@ -64,7 +64,7 @@
                 minPriceUpdated = false;
                 for (var j = 0; j < specials.Count; ++j)
                 {
-                    GetMinPrice(input, maxPrice, specials, shoppedProducts, ref minPrice, i, ref minPriceUpdated, j);
+                    this.GetMinPrice(input, maxPrice, specials, shoppedProducts, ref minPrice, i, ref minPriceUpdated, j);
                 }
 
                 i++;
