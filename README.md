@@ -10,6 +10,7 @@ Notes:
 
 ### Challenge 3
 http://functionapp20180414071532.azurewebsites.net/api/trolleyCalculator
+http://functionapp20180414071532.azurewebsites.net/api/trolleyCalculator/trolleyTotal
 
 Notes:
 - There is an issue in the test app. Instead of calling "trolleyCalculator" it calls "trolleyCalculator/trolleyTotal". The function app implements both the routes as a workaround.
