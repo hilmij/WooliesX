@@ -2,11 +2,8 @@
 {
     public class SoldProduct : Product
     {
-        public SoldProduct(Product product, long soldCount)
+        public SoldProduct(Product product, long soldCount) : base(product)
         {
-            base.Name = product.Name;
-            base.Price = product.Price;
-            base.Quantity = product.Quantity;
             this.SoldCount = soldCount;
         }
 

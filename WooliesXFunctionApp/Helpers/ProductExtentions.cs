@@ -28,9 +28,6 @@
                 case SortOption.Descending:
                     result = products.OrderByDescending(o => o.Name).ToList();
                     break;
-                case SortOption.Recommended:
-                    result = products.OrderByDescending(o => o.Quantity).ToList();
-                    break;
                 default:
                     result = products;
                     break;

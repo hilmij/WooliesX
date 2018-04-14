@@ -4,7 +4,7 @@
 
     public static class ListExtensions
     {
-        public static void InitSpecialCounts(this List<int> list, int number, int count)
+        public static void InitList(this List<int> list, int number, int count)
         {
             for (var i = 0; i < count; ++i)
             {

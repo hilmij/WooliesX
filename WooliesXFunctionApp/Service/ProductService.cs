@@ -55,11 +55,10 @@
             while (!minPriceUpdated)
             {
                 minPriceUpdated = false;
-                var specialCounts = new List<int>();
                 for (var j = 0; j < specials.Count; ++j)
                 {
-                    specialCounts.Clear();
-                    specialCounts.InitSpecialCounts(i, specials.Count);
+                    var specialCounts = new List<int>();
+                    specialCounts.InitList(i, specials.Count);
                     var more = true;
                     for (var k = j; more; ++k)
                     {
