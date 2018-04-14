@@ -98,7 +98,7 @@
         /// </summary>
         /// <param name="input">An instance of TrolleyCalculatorInput with prices, specials and quantities</param>
         /// <returns>The lowest possible total as decimal</returns>
-        public decimal GetMinPriceAsDecimal(TrolleyCalculatorInput input) => (decimal) this.GetMinPrice(input).Total;
+        public decimal GetMinPriceAsDecimal(TrolleyCalculatorInput input) => (decimal)this.GetMinPrice(input).Total;
 
         private TrolleyCalculatorOutput CreateTrolleyCalculatorOutput(float total)
         {

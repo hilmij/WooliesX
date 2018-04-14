@@ -11,7 +11,7 @@
 
         public Product ToProduct()
         {
-            return (Product) this;
+            return (Product)this;
         }
     }
 }
