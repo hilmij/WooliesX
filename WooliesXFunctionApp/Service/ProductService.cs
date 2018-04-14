@@ -57,34 +57,7 @@
                 minPriceUpdated = false;
                 for (var j = 0; j < specials.Count; ++j)
                 {
-                    var specialCounts = new List<int>();
-                    specialCounts.InitList(i, specials.Count);
-                    var more = true;
-                    for (var k = j; more; ++k)
-                    {
-                        int oldValue = specialCounts[j];
-                        specialCounts[j] = oldValue + k;
-                        if (this.IsApplicable(shoppedProducts, specials, specialCounts))
-                        {
-                            var priceForSpecials = this.GetPriceForSpecials(specials, specialCounts);
-                            if (maxPrice > priceForSpecials)
-                            {
-                                var priceForRest = this.GetPriceForNonSpecials(input.Products, specials, specialCounts, shoppedProducts);
-                                var price = priceForSpecials + priceForRest;
-                                if (price < minPrice)
-                                {
-                                    minPrice = price;
-                                    minPriceUpdated = true;
-                                }
-
-                                specialCounts[j] = oldValue;
-                            }
-                        }
-                        else
-                        {
-                            more = false;
-                        }
-                    }
+                    this.GetMinPrice(input, maxPrice, specials, shoppedProducts, ref minPrice, i, ref minPriceUpdated, j);
                 }
 
                 i++;
@@ -135,6 +108,43 @@
             }
 
             return productsDict.Values.ToList().OrderByDescending(p => p.SoldCount).ThenByDescending(p => p.Quantity).Select(p => p.ToProduct()).ToList();
+        }
+
+        private void GetMinPrice(TrolleyCalculatorInput input, float maxPrice, List<Special> specials, Dictionary<string, long> shoppedProducts, ref float minPrice, int i, ref bool minPriceUpdated, int j)
+        {
+            var specialCounts = new List<int>();
+            specialCounts.InitList(i, specials.Count);
+            var more = true;
+            for (var k = j; more; ++k)
+            {
+                int oldValue = specialCounts[j];
+                specialCounts[j] = oldValue + k;
+                if (this.IsApplicable(shoppedProducts, specials, specialCounts))
+                {
+                    this.GetMinPrice(input, maxPrice, specials, shoppedProducts, ref minPrice, ref minPriceUpdated, j, specialCounts, oldValue);
+                }
+                else
+                {
+                    more = false;
+                }
+            }
+        }
+
+        private void GetMinPrice(TrolleyCalculatorInput input, float maxPrice, List<Special> specials, Dictionary<string, long> shoppedProducts, ref float minPrice, ref bool minPriceUpdated, int j, List<int> specialCounts, int oldValue)
+        {
+            var priceForSpecials = this.GetPriceForSpecials(specials, specialCounts);
+            if (maxPrice > priceForSpecials)
+            {
+                var priceForRest = this.GetPriceForNonSpecials(input.Products, specials, specialCounts, shoppedProducts);
+                var price = priceForSpecials + priceForRest;
+                if (price < minPrice)
+                {
+                    minPrice = price;
+                    minPriceUpdated = true;
+                }
+
+                specialCounts[j] = oldValue;
+            }
         }
 
         private float GetMaxPrice(TrolleyCalculatorInput input)
