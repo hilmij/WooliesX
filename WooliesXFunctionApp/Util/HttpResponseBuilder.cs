@@ -10,10 +10,14 @@
     {
         public static HttpResponseMessage Build(T value)
         {
-            var json = JsonConvert.SerializeObject(value);
-            return new HttpResponseMessage(HttpStatusCode.OK)
+            return Build(HttpStatusCode.OK, JsonConvert.SerializeObject(value));
+        }
+
+        public static HttpResponseMessage Build(HttpStatusCode code, string message)
+        {
+            return new HttpResponseMessage(code)
             {
-                Content = new StringContent(json, Encoding.UTF8, MediaType.ApplicationJson)
+                Content = new StringContent(message, Encoding.UTF8, MediaType.ApplicationJson)
             };
         }
     }

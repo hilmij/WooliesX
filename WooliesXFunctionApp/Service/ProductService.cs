@@ -31,8 +31,7 @@
         /// <returns>A list of products</returns>
         public List<Product> GetProducts(SortOption sortOption)
         {
-            var products = sortOption == SortOption.Recommended ? this.GetSummarisedShopperHistory() : this.resourceService.GetProducts();
-            return products.Sort(sortOption);
+            return sortOption == SortOption.Recommended ? this.GetSortedRecomendedProducts() : this.resourceService.GetProducts().Sort(sortOption);
         }
 
         /// <summary>
@@ -95,6 +94,13 @@
             return this.CreateTrolleyCalculatorOutput(minPrice);
         }
 
+        /// <summary>
+        /// Returns the lowest possible total based on provided lists of prices, specials and quantities.
+        /// </summary>
+        /// <param name="input">An instance of TrolleyCalculatorInput with prices, specials and quantities</param>
+        /// <returns>The lowest possible total as decimal</returns>
+        public decimal GetMinPriceAsDecimal(TrolleyCalculatorInput input) => (decimal) this.GetMinPrice(input).Total;
+
         private TrolleyCalculatorOutput CreateTrolleyCalculatorOutput(float total)
         {
             return new TrolleyCalculatorOutput()
@@ -108,10 +114,10 @@
         /// products with total quantities from the history.
         /// </summary>
         /// <returns>A list of products</returns>
-        private List<Product> GetSummarisedShopperHistory()
+        private List<Product> GetSortedRecomendedProducts()
         {
             var shopperHistories = this.resourceService.GetShopperHistory();
-            var productsDict = new Dictionary<string, Product>();
+            var productsDict = new Dictionary<string, SoldProduct>();
 
             foreach (ShopperHistory shopperHistory in shopperHistories)
             {
@@ -120,17 +126,16 @@
                     if (productsDict.ContainsKey(product.Name))
                     {
                         productsDict[product.Name].Quantity += product.Quantity;
+                        productsDict[product.Name].SoldCount++;
                     }
                     else
                     {
-                        productsDict.Add(product.Name, product);
+                        productsDict.Add(product.Name, new SoldProduct(product, 1));
                     }
                 }
             }
 
-            var products = productsDict.Values.ToList();
-            products.ForEach(p => p.Quantity = 0);
-            return products;
+            return productsDict.Values.ToList().OrderByDescending(p => p.SoldCount).ThenByDescending(p => p.Quantity).Select(p => p.ToProduct()).ToList();
         }
 
         private float GetMaxPrice(TrolleyCalculatorInput input)
@@ -155,9 +160,11 @@
         {
             // The price is less than the max price when buying the individual items.
             var result = input.Specials.Where(s => s.Total < maxPrice).ToList();
+            
             // Should not to have any products that are not in the shopping cart.
             var shoppedProductNames = input.Quantities.Select(q => q.Name).ToList();
             result = result.Where(s => s.Quantities.All(q => shoppedProductNames.Contains(q.Name))).ToList();
+            
             // Should not to have more products than the requested quantity.
             var shoppedProductQuntities = input.Quantities.ToDictionary(q => q.Name, q => q.Quantity);
             return result.Where(s => s.Quantities.All(q => { shoppedProductQuntities.TryGetValue(q.Name, out long v); return v >= q.Quantity; })).ToList();

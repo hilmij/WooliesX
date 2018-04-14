@@ -58,6 +58,7 @@
                 }
             };
             Assert.AreEqual(service.GetMinPrice(input).Total, 14f);
+            Assert.AreEqual(service.GetMinPriceAsDecimal(input), 14);
         }
 
         [TestMethod]
@@ -87,6 +88,7 @@
                 }
             };
             Assert.AreEqual(service.GetMinPrice(input).Total, 0f);
+            Assert.AreEqual(service.GetMinPriceAsDecimal(input), 0);
         }
 
         private void TestProductNamesOrder(List<Product> products, string firstExpected, string lastExpected)
