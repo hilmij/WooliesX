@@ -6,7 +6,7 @@ http://functionapp20180414071532.azurewebsites.net/api/answers
 http://functionapp20180414071532.azurewebsites.net/api//sort?sortOption=High
 
 Notes:
-- Recommended sort is failing, but I think the API return is correct as per my understanding.
+- Recommended sort is failing from the test application, but I think the function returns the correct sorted products as per my understanding.
 
 ### Challenge 3
 http://functionapp20180414071532.azurewebsites.net/api/trolleyCalculator
