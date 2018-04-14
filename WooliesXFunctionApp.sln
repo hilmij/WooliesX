@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WooliesXFunctionApp", "WooliesXFunctionApp\WooliesXFunctionApp.csproj", "{0D1C002B-3022-4BCC-A144-88D764EA622B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WooliesXFunctionTest", "WooliesXFunctionTest\WooliesXFunctionTest.csproj", "{5CDEC97C-C91A-4301-9DF4-B64D0581A385}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D1C002B-3022-4BCC-A144-88D764EA622B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D1C002B-3022-4BCC-A144-88D764EA622B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D1C002B-3022-4BCC-A144-88D764EA622B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D1C002B-3022-4BCC-A144-88D764EA622B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CDEC97C-C91A-4301-9DF4-B64D0581A385}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CDEC97C-C91A-4301-9DF4-B64D0581A385}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CDEC97C-C91A-4301-9DF4-B64D0581A385}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CDEC97C-C91A-4301-9DF4-B64D0581A385}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B7F7FA3-C620-44C3-B094-8500C5CA9AD9}
+	EndGlobalSection
+EndGlobal
