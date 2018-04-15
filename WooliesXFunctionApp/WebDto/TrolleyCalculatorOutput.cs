@@ -2,6 +2,6 @@
 {
     public class TrolleyCalculatorOutput
     {
-        public float Total { get; set; }
+        public decimal Total { get; set; }
     }
 }

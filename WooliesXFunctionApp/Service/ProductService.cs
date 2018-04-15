@@ -78,7 +78,7 @@
             return this.CreateTrolleyCalculatorOutput(minPrice);
         }
 
-        private void GetMinPrice(TrolleyCalculatorInput input, float maxPrice, List<Special> specials, Dictionary<string, long> shoppedProducts, ref float minPrice, int i, ref bool minPriceUpdated, int j)
+        private void GetMinPrice(TrolleyCalculatorInput input, decimal maxPrice, List<Special> specials, Dictionary<string, long> shoppedProducts, ref decimal minPrice, int i, ref bool minPriceUpdated, int j)
         {
             var specialCounts = new List<int>();
             specialCounts.InitList(i, specials.Count);
@@ -110,7 +110,7 @@
             }
         }
 
-        private TrolleyCalculatorOutput CreateTrolleyCalculatorOutput(float total)
+        private TrolleyCalculatorOutput CreateTrolleyCalculatorOutput(decimal total)
         {
             return new TrolleyCalculatorOutput()
             {
@@ -147,9 +147,9 @@
             return productsDict.Values.ToList().OrderByDescending(p => p.SoldCount).ThenByDescending(p => p.Quantity).Select(p => p.ToProduct()).ToList();
         }
 
-        private float GetMaxPrice(TrolleyCalculatorInput input)
+        private decimal GetMaxPrice(TrolleyCalculatorInput input)
         {
-            float price = 0f;
+            decimal price = 0;
             foreach (Product quantity in input.Quantities)
             {
                 foreach (Product product in input.Products)
@@ -165,7 +165,7 @@
             return price;
         }
 
-        private List<Special> GetApplicableSpecials(TrolleyCalculatorInput input, float maxPrice)
+        private List<Special> GetApplicableSpecials(TrolleyCalculatorInput input, decimal maxPrice)
         {
             // The price is less than the max price when buying the individual items.
             var result = input.Specials.Where(s => s.Total < maxPrice).ToList();
@@ -184,22 +184,22 @@
             return input.Quantities.ToDictionary(q => q.Name, q => q.Quantity);
         }
 
-        private float GetPriceForNonSpecials(List<Product> products, List<Special> specials, List<int> specialCounts, Dictionary<string, long> shoppedProducts)
+        private decimal GetPriceForNonSpecials(List<Product> products, List<Special> specials, List<int> specialCounts, Dictionary<string, long> shoppedProducts)
         {
-            float result = 0f;
+            decimal result = 0;
             foreach (KeyValuePair<string, long> entry in shoppedProducts)
             {
-                float productPrice = this.GetProductPrice(products, entry.Key);
+                decimal productPrice = this.GetProductPrice(products, entry.Key);
                 result += (entry.Value - this.GetQuantityByProduct(specials, specialCounts, entry.Key)) * productPrice;
             }
 
             return result;
         }
 
-        private float GetProductPrice(List<Product> products, string productName)
+        private decimal GetProductPrice(List<Product> products, string productName)
         {
             Product product = products.Where(p => p.Name == productName).FirstOrDefault();
-            return product == default(Product) ? 0f : product.Price;
+            return product == default(Product) ? 0 : product.Price;
         }
 
         private long GetQuantityByProduct(List<Special> specials, List<int> specialCounts, string productName)
@@ -220,9 +220,9 @@
             return quantity;
         }
 
-        private float GetPriceForSpecials(List<Special> specials, List<int> specialCounts)
+        private decimal GetPriceForSpecials(List<Special> specials, List<int> specialCounts)
         {
-            float result = 0f;
+            decimal result = 0;
             for (int i = 0; i < specialCounts.Count; i++)
             {
                 result += specialCounts[i] * specials[i].Total;

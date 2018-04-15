@@ -6,6 +6,6 @@
     {
         public List<Product> Quantities { get; set; }
 
-        public float Total { get; set; }
+        public decimal Total { get; set; }
     }
 }
