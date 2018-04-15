@@ -2,19 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
 
     public class HttpClient
     {
         private static System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
 
-        public static T Get<T>(string root, string path, Dictionary<string, string> urlParams)
+        public static async Task<T> Get<T>(string root, string path, Dictionary<string, string> urlParams)
         {
             var uri = GetUri(root, path, urlParams);
             var response = httpClient.GetAsync(uri).Result;
             if (response.IsSuccessStatusCode)
             {
-                var json = response.Content.ReadAsStringAsync().Result;
+                var json = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<T>(json);
             }
 

@@ -1,6 +1,7 @@
 ﻿namespace WooliesXFunctionApp.Service
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using WooliesXFunctionApp.Core;
     using WooliesXFunctionApp.Entity;
     using WooliesXFunctionApp.Exception;
@@ -14,7 +15,7 @@
 
         public List<Product> GetProducts()
         {
-            var result = this.GetResource<List<Product>>(UrlPathProducts);
+            var result = this.GetResource<List<Product>>(UrlPathProducts).Result;
             if (result == default(List<Product>))
             {
                 throw new CannotGetResourceException("Failed to get the products.");
@@ -25,7 +26,7 @@
 
         public List<ShopperHistory> GetShopperHistory()
         {
-            var result = this.GetResource<List<ShopperHistory>>(UrlPathShopperHistory);
+            var result = this.GetResource<List<ShopperHistory>>(UrlPathShopperHistory).Result;
             if (result == default(List<ShopperHistory>))
             {
                 throw new CannotGetResourceException("Failed to get the shopper history.");
@@ -34,9 +35,9 @@
             return result;
         }
 
-        private T GetResource<T>(string path)
+        private async Task<T> GetResource<T>(string path)
         {
-            return HttpClient.Get<T>(
+            return await HttpClient.Get<T>(
                 AppConstants.UrlResourceBase, 
                 path,
                 new Dictionary<string, string>
