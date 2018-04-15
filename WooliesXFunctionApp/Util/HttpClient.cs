@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
-    using WooliesXFunctionApp.Exception;
 
     public class HttpClient
     {
@@ -19,7 +18,7 @@
                 return JsonConvert.DeserializeObject<T>(json);
             }
 
-            throw new CannotGetResourceException(response.ReasonPhrase);
+            return default(T);
         }
 
         private static string GetUri(string root, string path, Dictionary<string, string> urlParams)
