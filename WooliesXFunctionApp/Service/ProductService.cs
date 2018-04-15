@@ -48,6 +48,11 @@
         /// <returns>An instance of TrolleyCalculatorOutput with the lowest possible total</returns>
         public TrolleyCalculatorOutput GetMinPrice(TrolleyCalculatorInput input)
         {
+            if (input == null)
+            {
+                return this.CreateTrolleyCalculatorOutput(0);
+            }
+
             var maxPrice = this.GetMaxPrice(input);
             if (maxPrice == 0)
             {

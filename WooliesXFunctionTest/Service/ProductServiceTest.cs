@@ -28,7 +28,7 @@
                 Products = new List<Product>()
                 {
                     new Product { Name = MockResourceService.ProductNameA, Price = 2F },
-                    new Product { Name = MockResourceService.ProductNameB, Price = 5F }
+                    new Product { Name = MockResourceService.ProductNameB, Price = 3F }
                 },
                 Quantities = new List<Product>()
                 {
@@ -43,7 +43,7 @@
                         Quantities = new List<Product>()
                         {
                             new Product { Name = MockResourceService.ProductNameA, Quantity = 3 },
-                            new Product { Name = MockResourceService.ProductNameB, Quantity = 0 }
+                            new Product { Name = MockResourceService.ProductNameB, Quantity = 1 }
                         }
                     },
                     new Special
@@ -57,8 +57,8 @@
                     }
                 }
             };
-            Assert.AreEqual(service.GetMinPrice(input).Total, 14f);
-            Assert.AreEqual(service.GetMinPriceAsDecimal(input), 14);
+            Assert.AreEqual(service.GetMinPrice(input).Total, 8f);
+            Assert.AreEqual(service.GetMinPriceAsDecimal(input), 8);
         }
 
         [TestMethod]
