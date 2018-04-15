@@ -3,7 +3,7 @@
 http://functionapp20180414071532.azurewebsites.net/api/answers
 
 ### Challenge 2
-http://functionapp20180414071532.azurewebsites.net/api//sort?sortOption=High
+http://functionapp20180414071532.azurewebsites.net/api/sort/{sortOption?}
 
 Notes:
 - Recommended sort is failing from the test application, but I think the function returns the correct sorted products as per my understanding.
